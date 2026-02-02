@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package muenu;
+
+option go_package = "github.com/jany/my-coffee/proto/menu";
+
+service MenuService {
+  rpc GetMenu (GetMenuRequest) returns (GetMenuResponse);
+}
+
+message GetMenuRequest {
+}
+
+message MenuItem {
+  string name = 1;
+  string description = 2;
+  double price = 3;
+}
+
+// Instead of saving : "name=latte, description=strong, price=3.5"
+// Protobuf save: "1=latte, 2=strong, 3=3.5" lightweight serialization
+message GetMenuResponse {
+  // repeated means array/slice
+  repeated MenuItem items = 1;
+}

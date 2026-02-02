@@ -1,0 +1,5 @@
+package menusvc
+
+func main() {
+	
+}
