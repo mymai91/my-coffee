@@ -18,7 +18,13 @@ install-tools:
 	go install connectrpc.com/connect/cmd/protoc-gen-connect-go@latest
 
 run-menusvc:
-	go run ./cmd/menusvc/main.go
+	go run ./cmd/menusvc
 
 run-menusvc-prod:
 	ENV=production go run ./cmd/menusvc
+
+run-brewsvc:
+	go run ./cmd/brewsvc
+
+run-brewsvc-prod:
+	ENV=production go run ./cmd/brewsvc

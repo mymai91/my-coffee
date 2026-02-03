@@ -2,7 +2,7 @@ version: v1
 managed:
   enabled: true
   go_package_prefix:
-    default: github.com/kevintran/coffee/gen
+    default: github.com/jany/coffee/gen
 plugins:
   - name: go
     out: gen

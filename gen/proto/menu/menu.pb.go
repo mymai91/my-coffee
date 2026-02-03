@@ -177,8 +177,8 @@ const file_proto_menu_menu_proto_rawDesc = "" +
 	"\x0fGetMenuResponse\x12$\n" +
 	"\x05items\x18\x01 \x03(\v2\x0e.menu.MenuItemR\x05items2E\n" +
 	"\vMenuService\x126\n" +
-	"\aGetMenu\x12\x14.menu.GetMenuRequest\x1a\x15.menu.GetMenuResponseBq\n" +
-	"\bcom.menuB\tMenuProtoP\x01Z*github.com/kevintran/coffee/gen/proto/menu\xa2\x02\x03MXX\xaa\x02\x04Menu\xca\x02\x04Menu\xe2\x02\x10Menu\\GPBMetadata\xea\x02\x04Menub\x06proto3"
+	"\aGetMenu\x12\x14.menu.GetMenuRequest\x1a\x15.menu.GetMenuResponseBl\n" +
+	"\bcom.menuB\tMenuProtoP\x01Z%github.com/jany/coffee/gen/proto/menu\xa2\x02\x03MXX\xaa\x02\x04Menu\xca\x02\x04Menu\xe2\x02\x10Menu\\GPBMetadata\xea\x02\x04Menub\x06proto3"
 
 var (
 	file_proto_menu_menu_proto_rawDescOnce sync.Once

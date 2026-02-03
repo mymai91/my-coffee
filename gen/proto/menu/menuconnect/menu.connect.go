@@ -8,7 +8,7 @@ import (
 	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
-	menu "github.com/kevintran/coffee/gen/proto/menu"
+	menu "github.com/jany/coffee/gen/proto/menu"
 	http "net/http"
 	strings "strings"
 )
