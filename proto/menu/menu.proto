@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package muenu;
+package menu;
 
 option go_package = "github.com/jany/my-coffee/proto/menu";
 

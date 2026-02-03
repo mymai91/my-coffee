@@ -22,7 +22,7 @@ const _ = connect.IsAtLeastVersion1_13_0
 
 const (
 	// MenuServiceName is the fully-qualified name of the MenuService service.
-	MenuServiceName = "muenu.MenuService"
+	MenuServiceName = "menu.MenuService"
 )
 
 // These constants are the fully-qualified names of the RPCs defined in this package. They're
@@ -34,15 +34,15 @@ const (
 // period.
 const (
 	// MenuServiceGetMenuProcedure is the fully-qualified name of the MenuService's GetMenu RPC.
-	MenuServiceGetMenuProcedure = "/muenu.MenuService/GetMenu"
+	MenuServiceGetMenuProcedure = "/menu.MenuService/GetMenu"
 )
 
-// MenuServiceClient is a client for the muenu.MenuService service.
+// MenuServiceClient is a client for the menu.MenuService service.
 type MenuServiceClient interface {
 	GetMenu(context.Context, *connect.Request[menu.GetMenuRequest]) (*connect.Response[menu.GetMenuResponse], error)
 }
 
-// NewMenuServiceClient constructs a client for the muenu.MenuService service. By default, it uses
+// NewMenuServiceClient constructs a client for the menu.MenuService service. By default, it uses
 // the Connect protocol with the binary Protobuf Codec, asks for gzipped responses, and sends
 // uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the connect.WithGRPC() or
 // connect.WithGRPCWeb() options.
@@ -67,12 +67,12 @@ type menuServiceClient struct {
 	getMenu *connect.Client[menu.GetMenuRequest, menu.GetMenuResponse]
 }
 
-// GetMenu calls muenu.MenuService.GetMenu.
+// GetMenu calls menu.MenuService.GetMenu.
 func (c *menuServiceClient) GetMenu(ctx context.Context, req *connect.Request[menu.GetMenuRequest]) (*connect.Response[menu.GetMenuResponse], error) {
 	return c.getMenu.CallUnary(ctx, req)
 }
 
-// MenuServiceHandler is an implementation of the muenu.MenuService service.
+// MenuServiceHandler is an implementation of the menu.MenuService service.
 type MenuServiceHandler interface {
 	GetMenu(context.Context, *connect.Request[menu.GetMenuRequest]) (*connect.Response[menu.GetMenuResponse], error)
 }
@@ -90,7 +90,7 @@ func NewMenuServiceHandler(svc MenuServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(menuServiceMethods.ByName("GetMenu")),
 		connect.WithHandlerOptions(opts...),
 	)
-	return "/muenu.MenuService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	return "/menu.MenuService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case MenuServiceGetMenuProcedure:
 			menuServiceGetMenuHandler.ServeHTTP(w, r)
@@ -104,5 +104,5 @@ func NewMenuServiceHandler(svc MenuServiceHandler, opts ...connect.HandlerOption
 type UnimplementedMenuServiceHandler struct{}
 
 func (UnimplementedMenuServiceHandler) GetMenu(context.Context, *connect.Request[menu.GetMenuRequest]) (*connect.Response[menu.GetMenuResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("muenu.MenuService.GetMenu is not implemented"))
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("menu.MenuService.GetMenu is not implemented"))
 }

@@ -168,17 +168,17 @@ var File_proto_menu_menu_proto protoreflect.FileDescriptor
 
 const file_proto_menu_menu_proto_rawDesc = "" +
 	"\n" +
-	"\x15proto/menu/menu.proto\x12\x05muenu\"\x10\n" +
+	"\x15proto/menu/menu.proto\x12\x04menu\"\x10\n" +
 	"\x0eGetMenuRequest\"V\n" +
 	"\bMenuItem\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x14\n" +
-	"\x05price\x18\x03 \x01(\x01R\x05price\"8\n" +
-	"\x0fGetMenuResponse\x12%\n" +
-	"\x05items\x18\x01 \x03(\v2\x0f.muenu.MenuItemR\x05items2G\n" +
-	"\vMenuService\x128\n" +
-	"\aGetMenu\x12\x15.muenu.GetMenuRequest\x1a\x16.muenu.GetMenuResponseBv\n" +
-	"\tcom.muenuB\tMenuProtoP\x01Z*github.com/kevintran/coffee/gen/proto/menu\xa2\x02\x03MXX\xaa\x02\x05Muenu\xca\x02\x05Muenu\xe2\x02\x11Muenu\\GPBMetadata\xea\x02\x05Muenub\x06proto3"
+	"\x05price\x18\x03 \x01(\x01R\x05price\"7\n" +
+	"\x0fGetMenuResponse\x12$\n" +
+	"\x05items\x18\x01 \x03(\v2\x0e.menu.MenuItemR\x05items2E\n" +
+	"\vMenuService\x126\n" +
+	"\aGetMenu\x12\x14.menu.GetMenuRequest\x1a\x15.menu.GetMenuResponseBq\n" +
+	"\bcom.menuB\tMenuProtoP\x01Z*github.com/kevintran/coffee/gen/proto/menu\xa2\x02\x03MXX\xaa\x02\x04Menu\xca\x02\x04Menu\xe2\x02\x10Menu\\GPBMetadata\xea\x02\x04Menub\x06proto3"
 
 var (
 	file_proto_menu_menu_proto_rawDescOnce sync.Once
@@ -194,14 +194,14 @@ func file_proto_menu_menu_proto_rawDescGZIP() []byte {
 
 var file_proto_menu_menu_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_proto_menu_menu_proto_goTypes = []any{
-	(*GetMenuRequest)(nil),  // 0: muenu.GetMenuRequest
-	(*MenuItem)(nil),        // 1: muenu.MenuItem
-	(*GetMenuResponse)(nil), // 2: muenu.GetMenuResponse
+	(*GetMenuRequest)(nil),  // 0: menu.GetMenuRequest
+	(*MenuItem)(nil),        // 1: menu.MenuItem
+	(*GetMenuResponse)(nil), // 2: menu.GetMenuResponse
 }
 var file_proto_menu_menu_proto_depIdxs = []int32{
-	1, // 0: muenu.GetMenuResponse.items:type_name -> muenu.MenuItem
-	0, // 1: muenu.MenuService.GetMenu:input_type -> muenu.GetMenuRequest
-	2, // 2: muenu.MenuService.GetMenu:output_type -> muenu.GetMenuResponse
+	1, // 0: menu.GetMenuResponse.items:type_name -> menu.MenuItem
+	0, // 1: menu.MenuService.GetMenu:input_type -> menu.GetMenuRequest
+	2, // 2: menu.MenuService.GetMenu:output_type -> menu.GetMenuResponse
 	2, // [2:3] is the sub-list for method output_type
 	1, // [1:2] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name

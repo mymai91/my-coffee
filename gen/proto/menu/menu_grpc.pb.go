@@ -19,7 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	MenuService_GetMenu_FullMethodName = "/muenu.MenuService/GetMenu"
+	MenuService_GetMenu_FullMethodName = "/menu.MenuService/GetMenu"
 )
 
 // MenuServiceClient is the client API for MenuService service.
@@ -108,7 +108,7 @@ func _MenuService_GetMenu_Handler(srv interface{}, ctx context.Context, dec func
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var MenuService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "muenu.MenuService",
+	ServiceName: "menu.MenuService",
 	HandlerType: (*MenuServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
