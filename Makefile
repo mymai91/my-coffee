@@ -33,3 +33,21 @@ docker-db-dev-rm:
 	docker compose rm dev-db -s -f -v
 docker-db-dev-up:
 	docker compose up dev-db -d
+
+# Migrations
+migrate-up:
+	go run cmd/migrate/main.go up
+
+migrate-down:
+	go run cmd/migrate/main.go down
+
+migrate-status:
+	go run cmd/migrate/main.go version
+
+migrate-create:
+	@echo "Usage: make migrate-create name=create_users_table"
+	@if [ -z "$(name)" ]; then \
+		echo "Error: name parameter is required"; \
+		exit 1; \
+	fi
+	migrate create -ext sql -dir migrations -seq $(name)
