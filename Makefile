@@ -28,3 +28,8 @@ run-brewsvc:
 
 run-brewsvc-prod:
 	ENV=production go run ./cmd/brewsvc
+
+docker-db-dev-rm:
+	docker compose rm dev-db -s -f -v
+docker-db-dev-up:
+	docker compose up dev-db -d

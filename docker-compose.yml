@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  dev-db:
+    image: postgres:15
+    ports:
+      - 5454:5432
+    environment:
+      - POSTGRES_USER=jany
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=coffee_dev
+#     volumes:
+#       - dev-db-data:/var/lib/postgresql/data
+# volumes:
+#   dev-db-data: 
+#     driver: local
