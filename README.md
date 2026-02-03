@@ -42,6 +42,26 @@ make start-services
 
 ## Project Structure
 
+Option 1: Monorepo (What You're Using)
+
+```
+my-coffee/
+├── go.mod                    # One go.mod for all services
+├── proto/
+│   └── menu.proto
+├── cmd/
+│   ├── menusvc/
+│   │   └── main.go          # Menu service entry point
+│   ├── brewsvc/
+│   │   └── main.go          # Brew service entry point
+│   ├── coffeecli/
+│   │   └── main.go          # Customer CLI entry point
+│   └── baristacli/
+│       └── main.go          # Barista CLI entry point
+└── Makefile
+```
+
+
 ```
 my-coffee/
 ├── cmd/                    # Application entry points
