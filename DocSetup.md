@@ -33,3 +33,16 @@ go get github.com/lib/pq
 go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 ```
 
+# Part 2: Migration Management
+
+### 1. Start PostgreSQL
+make docker-db-dev-up
+
+### 2. Create a new migration
+make migrate-create name=create_orders_table
+
+### 3. Run migrations
+make migrate-up
+
+### 4. Check status
+make migrate-status
