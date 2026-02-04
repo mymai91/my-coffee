@@ -1,35 +1,42 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"net"
 	"os"
 
+	"github.com/jany/my-coffee/config"
 	brewpb "github.com/jany/my-coffee/gen/proto/brew"
 	"github.com/jany/my-coffee/internal/brews"
-
+	database "github.com/jany/my-coffee/internal/datbase"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
 
 func main() {
-	listener, err := net.Listen("tcp", ":50051")
+	// Load config
+	config.Load()
+
+	// Connect to database
+	db := database.Connect()
+	defer database.Close()
+
+	// Create gRPC server
+	lis, err := net.Listen("tcp", ":50051")
 	if err != nil {
-		fmt.Printf("Failed to listen on Port 50051: %v\n", err)
-		return
+		log.Fatalf("failed to listen: %v", err)
 	}
 
-	server := grpc.NewServer()
-	brewService := brews.New()
-	brewpb.RegisterBrewServiceServer(server, brewService)
+	grpcServer := grpc.NewServer()
+	brewpb.RegisterBrewServiceServer(grpcServer, brews.New(db))
 
 	// Only enable reflection in development
     if os.Getenv("ENV") != "production" {
-        reflection.Register(server)
+      reflection.Register(grpcServer)
     }
 
-	fmt.Println("Menu Service is running on port 50051...")
-	if err := server.Serve(listener); err != nil {
-		fmt.Printf("Failed to serve gRPC server: %v\n", err)
+	log.Println("BrewService running on :50051")
+	if err := grpcServer.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
 	}
 }
