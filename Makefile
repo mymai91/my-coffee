@@ -18,7 +18,36 @@ install-tools:
 	go install connectrpc.com/connect/cmd/protoc-gen-connect-go@latest
 
 run-menusvc:
-	go run ./cmd/menusvc/main.go
+	go run ./cmd/menusvc
 
 run-menusvc-prod:
 	ENV=production go run ./cmd/menusvc
+
+run-brewsvc:
+	go run ./cmd/brewsvc
+
+run-brewsvc-prod:
+	ENV=production go run ./cmd/brewsvc
+
+docker-db-dev-rm:
+	docker compose rm dev-db -s -f -v
+docker-db-dev-up:
+	docker compose up dev-db -d
+
+# Migrations
+migrate-up:
+	go run cmd/migrate/main.go up
+
+migrate-down:
+	go run cmd/migrate/main.go down
+
+migrate-status:
+	go run cmd/migrate/main.go version
+
+migrate-create:
+	@echo "Usage: make migrate-create name=create_users_table"
+	@if [ -z "$(name)" ]; then \
+		echo "Error: name parameter is required"; \
+		exit 1; \
+	fi
+	migrate create -ext sql -dir migrations -seq $(name)

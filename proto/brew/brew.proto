@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package brew;
+
+option go_package = "github.com/jany/my-coffee/proto/brew";
+
+enum DrinkStatus {
+  DRINK_STATUS_UNSPECIFIED = 0;
+  QUEUED = 1;
+  GRINDING = 2;
+  BREWING = 3;
+  FROTHING = 4;
+  READY = 5;
+}
+
+service BrewService {
+  rpc OrderDrink (OrderRequest) returns (OrderResponse);
+  rpc ListOrders (ListOrdersRequest) returns(ListOrdersResponse);
+}
+
+message OrderRequest {
+  string menu_item_name = 1;
+}
+
+message OrderResponse {
+  string order_id = 1;
+}
+
+message ListOrdersRequest {
+}
+
+message Order {
+  string order_id = 1;
+  string menu_item_name = 2;
+  string status = 3;
+}
+
+message ListOrdersResponse {
+  repeated Order orders = 1;
+}

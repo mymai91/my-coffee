@@ -25,7 +25,7 @@ func main() {
 
 	// Only enable reflection in development
     if os.Getenv("ENV") != "production" {
-        reflection.Register(server)
+      reflection.Register(server)
     }
 
 	fmt.Println("Menu Service is running on port 50052...")
