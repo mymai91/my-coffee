@@ -1,9 +1,10 @@
+
+```go
 package brews
 
 import (
 	"context"
 	"fmt"
-	"log"
 
 	brewpb "github.com/jany/my-coffee/gen/proto/brew"
 	"github.com/jany/my-coffee/internal/models"
@@ -23,41 +24,54 @@ func New(db *gorm.DB) *Server {
 }
 
 func (s *Server) OrderDrink(ctx context.Context, req *brewpb.OrderRequest) (*brewpb.OrderResponse, error) {
-	log.Printf("OrderDink brew go: %v",req)
-
 	order := &models.Order{
 		MenuItemName: req.MenuItemName,
+		Status:        models.StatusQueued,
 	}
 
 	if err := s.orderRepo.Create(order); err != nil {
-		log.Printf("Failed to create order: %v", err)
-		return nil, fmt.Errorf("Failed to create order: %w", err)
+		return nil, fmt.Errorf("failed to create order: %w", err)
 	}
 
 	return &brewpb.OrderResponse{
-		OrderId: fmt.Sprintf("order-%d", order.ID),
+		OrderId: fmt.Sprintf("%d", order.ID),
 	}, nil
 }
 
 func (s *Server) ListOrders(ctx context.Context, req *brewpb.ListOrdersRequest) (*brewpb.ListOrdersResponse, error) {
 	orders, err := s.orderRepo.FindAll()
-
 	if err != nil {
-		log.Printf("Failed to list orders: %v", err)
-		return nil, fmt.Errorf("Failed to list orders: %w", err)
+		return nil, fmt.Errorf("failed to list orders: %w", err)
 	}
 
-	var orderpbs []*brewpb.Order
-
-
+	var pbOrders []*brewpb.Order
 	for _, order := range orders {
-		orderpbs = append(orderpbs, &brewpb.Order{
-			OrderId: fmt.Sprintf("order-%d", order.ID),
+		pbOrders = append(pbOrders, &brewpb.Order{
+			OrderId:      fmt.Sprintf("%d", order.ID),
 			MenuItemName: order.MenuItemName,
+			Status:       mapStatusToProto(order.Status),
 		})
 	}
 
 	return &brewpb.ListOrdersResponse{
-		Orders: orderpbs,
+		Orders: pbOrders,
 	}, nil
 }
+
+func mapStatusToProto(status models.OrderStatus) brewpb.DrinkStatus {
+	switch status {
+	case models.StatusQueued:
+		return brewpb.DrinkStatus_QUEUED
+	case models.StatusGrinding:
+		return brewpb.DrinkStatus_GRINDING
+	case models.StatusBrewing:
+		return brewpb.DrinkStatus_BREWING
+	case models.StatusFrothing:
+		return brewpb.DrinkStatus_FROTHING
+	case models.StatusReady:
+		return brewpb.DrinkStatus_READY
+	default:
+		return brewpb.DrinkStatus_DRINK_STATUS_UNSPECIFIED
+	}
+}
+```
