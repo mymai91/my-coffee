@@ -23,7 +23,7 @@ func New(db *gorm.DB) *Server {
 }
 
 func (s *Server) OrderDrink(ctx context.Context, req *brewpb.OrderRequest) (*brewpb.OrderResponse, error) {
-	log.Printf("OrderDink brew go: %v",req)
+	log.Printf("OrderDink brew go: %v", req)
 
 	order := &models.Order{
 		MenuItemName: req.MenuItemName,
@@ -49,11 +49,11 @@ func (s *Server) ListOrders(ctx context.Context, req *brewpb.ListOrdersRequest) 
 
 	var orderpbs []*brewpb.Order
 
-
 	for _, order := range orders {
 		orderpbs = append(orderpbs, &brewpb.Order{
 			OrderId: fmt.Sprintf("order-%d", order.ID),
 			MenuItemName: order.MenuItemName,
+			Status: string(order.Status),
 		})
 	}
 

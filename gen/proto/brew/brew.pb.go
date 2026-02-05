@@ -207,7 +207,7 @@ type Order struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	OrderId       string                 `protobuf:"bytes,1,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"`
 	MenuItemName  string                 `protobuf:"bytes,2,opt,name=menu_item_name,json=menuItemName,proto3" json:"menu_item_name,omitempty"`
-	Status        DrinkStatus            `protobuf:"varint,3,opt,name=status,proto3,enum=brew.DrinkStatus" json:"status,omitempty"`
+	Status        string                 `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -256,11 +256,11 @@ func (x *Order) GetMenuItemName() string {
 	return ""
 }
 
-func (x *Order) GetStatus() DrinkStatus {
+func (x *Order) GetStatus() string {
 	if x != nil {
 		return x.Status
 	}
-	return DrinkStatus_DRINK_STATUS_UNSPECIFIED
+	return ""
 }
 
 type ListOrdersResponse struct {
@@ -316,11 +316,11 @@ const file_proto_brew_brew_proto_rawDesc = "" +
 	"\x0emenu_item_name\x18\x01 \x01(\tR\fmenuItemName\"*\n" +
 	"\rOrderResponse\x12\x19\n" +
 	"\border_id\x18\x01 \x01(\tR\aorderId\"\x13\n" +
-	"\x11ListOrdersRequest\"s\n" +
+	"\x11ListOrdersRequest\"`\n" +
 	"\x05Order\x12\x19\n" +
 	"\border_id\x18\x01 \x01(\tR\aorderId\x12$\n" +
-	"\x0emenu_item_name\x18\x02 \x01(\tR\fmenuItemName\x12)\n" +
-	"\x06status\x18\x03 \x01(\x0e2\x11.brew.DrinkStatusR\x06status\"9\n" +
+	"\x0emenu_item_name\x18\x02 \x01(\tR\fmenuItemName\x12\x16\n" +
+	"\x06status\x18\x03 \x01(\tR\x06status\"9\n" +
 	"\x12ListOrdersResponse\x12#\n" +
 	"\x06orders\x18\x01 \x03(\v2\v.brew.OrderR\x06orders*k\n" +
 	"\vDrinkStatus\x12\x1c\n" +
@@ -361,17 +361,16 @@ var file_proto_brew_brew_proto_goTypes = []any{
 	(*ListOrdersResponse)(nil), // 5: brew.ListOrdersResponse
 }
 var file_proto_brew_brew_proto_depIdxs = []int32{
-	0, // 0: brew.Order.status:type_name -> brew.DrinkStatus
-	4, // 1: brew.ListOrdersResponse.orders:type_name -> brew.Order
-	1, // 2: brew.BrewService.OrderDrink:input_type -> brew.OrderRequest
-	3, // 3: brew.BrewService.ListOrders:input_type -> brew.ListOrdersRequest
-	2, // 4: brew.BrewService.OrderDrink:output_type -> brew.OrderResponse
-	5, // 5: brew.BrewService.ListOrders:output_type -> brew.ListOrdersResponse
-	4, // [4:6] is the sub-list for method output_type
-	2, // [2:4] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	4, // 0: brew.ListOrdersResponse.orders:type_name -> brew.Order
+	1, // 1: brew.BrewService.OrderDrink:input_type -> brew.OrderRequest
+	3, // 2: brew.BrewService.ListOrders:input_type -> brew.ListOrdersRequest
+	2, // 3: brew.BrewService.OrderDrink:output_type -> brew.OrderResponse
+	5, // 4: brew.BrewService.ListOrders:output_type -> brew.ListOrdersResponse
+	3, // [3:5] is the sub-list for method output_type
+	1, // [1:3] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_proto_brew_brew_proto_init() }
