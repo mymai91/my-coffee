@@ -70,7 +70,7 @@ func main() {
 	runMenuLoop(menuClient, brewClient)
 }
 
-func runMenuLoop(menuClient menupb.MenuServiceClient, _brewClient brewpb.BrewServiceClient) {
+func runMenuLoop(menuClient menupb.MenuServiceClient, brewClient brewpb.BrewServiceClient) {
 	reader := bufio.NewReader(os.Stdin)
 
 	for {
@@ -85,17 +85,17 @@ func runMenuLoop(menuClient menupb.MenuServiceClient, _brewClient brewpb.BrewSer
 			break
 		}
 
-		handleChoice(input, menuClient)
+		handleChoice(input, menuClient, brewClient)
 		fmt.Println()
 	}
 }
 
-func handleChoice(choice string, menuClient menupb.MenuServiceClient) {
+func handleChoice(choice string, menuClient menupb.MenuServiceClient, brewClient brewpb.BrewServiceClient) {
 	switch choice {
 	case "1":
 		viewMenu(menuClient)
 	case "2":
-		fmt.Println("You choose to check order status")
+		checkListOrders(brewClient)
 	default:
 		fmt.Println("Invalid option. Please choose 1, 2, or 3.")
 	}
@@ -124,12 +124,32 @@ func viewMenu(client menupb.MenuServiceClient) {
 	}
 }
 
+func checkListOrders(client brewpb.BrewServiceClient) {
+	ctx := context.Background()
+
+	resp, err := client.ListOrders(ctx, &brewpb.ListOrdersRequest{})
+
+	if err != nil {
+		fmt.Printf("List orders error %v\n", err)
+		return
+	}
+
+	fmt.Printf("Orders:\n")
+	fmt.Println("===============================")
+
+	for index, order := range resp.Orders {
+		fmt.Printf("%d_ %s _ %s\n", index+1, order.MenuItemName, order.Status)
+		fmt.Println()
+		fmt.Println("===============================")
+	}
+}
+
 func showMenu() {
 	fmt.Println("Welcome to the Coffee CLI!")
 	fmt.Println()
 	fmt.Println("Menu:")
 	fmt.Println("1. View menu")
-	fmt.Println("2. Check order status")
+	fmt.Println("2. Check List orders status")
 	fmt.Println("3. Quit")
 	fmt.Println()
 }
