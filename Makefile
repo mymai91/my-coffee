@@ -29,6 +29,9 @@ run-brewsvc:
 run-brewsvc-prod:
 	ENV=production go run ./cmd/brewsvc
 
+run-coffeecli:
+	go run ./cmd/coffeecli
+
 docker-db-dev-rm:
 	docker compose rm dev-db -s -f -v
 docker-db-dev-up:
