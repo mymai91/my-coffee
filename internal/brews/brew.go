@@ -29,8 +29,9 @@ func (s *Server) OrderDrink(ctx context.Context, req *brewpb.OrderRequest) (*bre
 		MenuItemName: req.MenuItemName,
 	}
 
+	// Validation now happens automatically in BeforeCreate hook (like Rails!)
 	if err := s.orderRepo.Create(order); err != nil {
-		log.Printf("Failed to create order: %v", err)
+		fmt.Printf("Failed to create order: %v\n", err)
 		return nil, fmt.Errorf("Failed to create order: %w", err)
 	}
 

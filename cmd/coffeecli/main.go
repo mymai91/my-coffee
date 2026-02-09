@@ -80,7 +80,7 @@ func runMenuLoop(menuClient menupb.MenuServiceClient, brewClient brewpb.BrewServ
 		input, _ := reader.ReadString('\n')
 		input = strings.TrimSpace(input)
 
-		if input == "3" {
+		if input == "4" {
 			fmt.Println("Goodbye!")
 			break
 		}
@@ -96,8 +96,10 @@ func handleChoice(choice string, menuClient menupb.MenuServiceClient, brewClient
 		viewMenu(menuClient)
 	case "2":
 		checkListOrders(brewClient)
+	case "3":
+		createOrder(brewClient)
 	default:
-		fmt.Println("Invalid option. Please choose 1, 2, or 3.")
+		fmt.Println("Invalid option. Please choose 1, 2, 3, or 4.")
 	}
 }
 
@@ -144,12 +146,39 @@ func checkListOrders(client brewpb.BrewServiceClient) {
 	}
 }
 
+func createOrder(client brewpb.BrewServiceClient) {
+	fmt.Printf("Enter Menu Item Name: ")
+
+	ctx := context.Background()
+
+	reader := bufio.NewReader(os.Stdin)
+
+	input, _ := reader.ReadString('\n')
+	input = strings.TrimSpace(input)
+
+	// Validate empty input
+	// if input == "" {
+	// 	fmt.Println("Error: Menu Item Name cannot be empty")
+	// 	return
+	// }
+
+	resp, err := client.OrderDrink(ctx, &brewpb.OrderRequest{MenuItemName: input})
+
+	if err != nil {
+		fmt.Printf("Order Drink error: %v\n", err)
+		return
+	}
+
+	fmt.Printf("Order drink %v \n", resp)
+}
+
 func showMenu() {
 	fmt.Println("Welcome to the Coffee CLI!")
 	fmt.Println()
 	fmt.Println("Menu:")
 	fmt.Println("1. View menu")
 	fmt.Println("2. Check List orders status")
-	fmt.Println("3. Quit")
+	fmt.Println("3. Create an order")
+	fmt.Println("4. Quit")
 	fmt.Println()
 }
