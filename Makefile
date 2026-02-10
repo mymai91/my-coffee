@@ -29,6 +29,9 @@ run-brewsvc:
 run-brewsvc-prod:
 	ENV=production go run ./cmd/brewsvc
 
+build-brewsvc:
+	go build ./cmd/brewsvc/
+
 run-coffeecli:
 	go run ./cmd/coffeecli
 
