@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: proto/menu/menu.proto
+// source: menu/menu.proto
 
 package menu
 
@@ -29,7 +29,7 @@ type GetMenuRequest struct {
 
 func (x *GetMenuRequest) Reset() {
 	*x = GetMenuRequest{}
-	mi := &file_proto_menu_menu_proto_msgTypes[0]
+	mi := &file_menu_menu_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -41,7 +41,7 @@ func (x *GetMenuRequest) String() string {
 func (*GetMenuRequest) ProtoMessage() {}
 
 func (x *GetMenuRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_menu_menu_proto_msgTypes[0]
+	mi := &file_menu_menu_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -54,7 +54,7 @@ func (x *GetMenuRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMenuRequest.ProtoReflect.Descriptor instead.
 func (*GetMenuRequest) Descriptor() ([]byte, []int) {
-	return file_proto_menu_menu_proto_rawDescGZIP(), []int{0}
+	return file_menu_menu_proto_rawDescGZIP(), []int{0}
 }
 
 type MenuItem struct {
@@ -68,7 +68,7 @@ type MenuItem struct {
 
 func (x *MenuItem) Reset() {
 	*x = MenuItem{}
-	mi := &file_proto_menu_menu_proto_msgTypes[1]
+	mi := &file_menu_menu_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -80,7 +80,7 @@ func (x *MenuItem) String() string {
 func (*MenuItem) ProtoMessage() {}
 
 func (x *MenuItem) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_menu_menu_proto_msgTypes[1]
+	mi := &file_menu_menu_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -93,7 +93,7 @@ func (x *MenuItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MenuItem.ProtoReflect.Descriptor instead.
 func (*MenuItem) Descriptor() ([]byte, []int) {
-	return file_proto_menu_menu_proto_rawDescGZIP(), []int{1}
+	return file_menu_menu_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *MenuItem) GetName() string {
@@ -129,7 +129,7 @@ type GetMenuResponse struct {
 
 func (x *GetMenuResponse) Reset() {
 	*x = GetMenuResponse{}
-	mi := &file_proto_menu_menu_proto_msgTypes[2]
+	mi := &file_menu_menu_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -141,7 +141,7 @@ func (x *GetMenuResponse) String() string {
 func (*GetMenuResponse) ProtoMessage() {}
 
 func (x *GetMenuResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_menu_menu_proto_msgTypes[2]
+	mi := &file_menu_menu_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -154,7 +154,7 @@ func (x *GetMenuResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMenuResponse.ProtoReflect.Descriptor instead.
 func (*GetMenuResponse) Descriptor() ([]byte, []int) {
-	return file_proto_menu_menu_proto_rawDescGZIP(), []int{2}
+	return file_menu_menu_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *GetMenuResponse) GetItems() []*MenuItem {
@@ -164,11 +164,11 @@ func (x *GetMenuResponse) GetItems() []*MenuItem {
 	return nil
 }
 
-var File_proto_menu_menu_proto protoreflect.FileDescriptor
+var File_menu_menu_proto protoreflect.FileDescriptor
 
-const file_proto_menu_menu_proto_rawDesc = "" +
+const file_menu_menu_proto_rawDesc = "" +
 	"\n" +
-	"\x15proto/menu/menu.proto\x12\x04menu\"\x10\n" +
+	"\x0fmenu/menu.proto\x12\x04menu\"\x10\n" +
 	"\x0eGetMenuRequest\"V\n" +
 	"\bMenuItem\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
@@ -177,28 +177,28 @@ const file_proto_menu_menu_proto_rawDesc = "" +
 	"\x0fGetMenuResponse\x12$\n" +
 	"\x05items\x18\x01 \x03(\v2\x0e.menu.MenuItemR\x05items2E\n" +
 	"\vMenuService\x126\n" +
-	"\aGetMenu\x12\x14.menu.GetMenuRequest\x1a\x15.menu.GetMenuResponseBl\n" +
-	"\bcom.menuB\tMenuProtoP\x01Z%github.com/jany/coffee/gen/proto/menu\xa2\x02\x03MXX\xaa\x02\x04Menu\xca\x02\x04Menu\xe2\x02\x10Menu\\GPBMetadata\xea\x02\x04Menub\x06proto3"
+	"\aGetMenu\x12\x14.menu.GetMenuRequest\x1a\x15.menu.GetMenuResponseBo\n" +
+	"\bcom.menuB\tMenuProtoP\x01Z(github.com/jany/my-coffee/gen/proto/menu\xa2\x02\x03MXX\xaa\x02\x04Menu\xca\x02\x04Menu\xe2\x02\x10Menu\\GPBMetadata\xea\x02\x04Menub\x06proto3"
 
 var (
-	file_proto_menu_menu_proto_rawDescOnce sync.Once
-	file_proto_menu_menu_proto_rawDescData []byte
+	file_menu_menu_proto_rawDescOnce sync.Once
+	file_menu_menu_proto_rawDescData []byte
 )
 
-func file_proto_menu_menu_proto_rawDescGZIP() []byte {
-	file_proto_menu_menu_proto_rawDescOnce.Do(func() {
-		file_proto_menu_menu_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_proto_menu_menu_proto_rawDesc), len(file_proto_menu_menu_proto_rawDesc)))
+func file_menu_menu_proto_rawDescGZIP() []byte {
+	file_menu_menu_proto_rawDescOnce.Do(func() {
+		file_menu_menu_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_menu_menu_proto_rawDesc), len(file_menu_menu_proto_rawDesc)))
 	})
-	return file_proto_menu_menu_proto_rawDescData
+	return file_menu_menu_proto_rawDescData
 }
 
-var file_proto_menu_menu_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
-var file_proto_menu_menu_proto_goTypes = []any{
+var file_menu_menu_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_menu_menu_proto_goTypes = []any{
 	(*GetMenuRequest)(nil),  // 0: menu.GetMenuRequest
 	(*MenuItem)(nil),        // 1: menu.MenuItem
 	(*GetMenuResponse)(nil), // 2: menu.GetMenuResponse
 }
-var file_proto_menu_menu_proto_depIdxs = []int32{
+var file_menu_menu_proto_depIdxs = []int32{
 	1, // 0: menu.GetMenuResponse.items:type_name -> menu.MenuItem
 	0, // 1: menu.MenuService.GetMenu:input_type -> menu.GetMenuRequest
 	2, // 2: menu.MenuService.GetMenu:output_type -> menu.GetMenuResponse
@@ -209,26 +209,26 @@ var file_proto_menu_menu_proto_depIdxs = []int32{
 	0, // [0:1] is the sub-list for field type_name
 }
 
-func init() { file_proto_menu_menu_proto_init() }
-func file_proto_menu_menu_proto_init() {
-	if File_proto_menu_menu_proto != nil {
+func init() { file_menu_menu_proto_init() }
+func file_menu_menu_proto_init() {
+	if File_menu_menu_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_menu_menu_proto_rawDesc), len(file_proto_menu_menu_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_menu_menu_proto_rawDesc), len(file_menu_menu_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_proto_menu_menu_proto_goTypes,
-		DependencyIndexes: file_proto_menu_menu_proto_depIdxs,
-		MessageInfos:      file_proto_menu_menu_proto_msgTypes,
+		GoTypes:           file_menu_menu_proto_goTypes,
+		DependencyIndexes: file_menu_menu_proto_depIdxs,
+		MessageInfos:      file_menu_menu_proto_msgTypes,
 	}.Build()
-	File_proto_menu_menu_proto = out.File
-	file_proto_menu_menu_proto_goTypes = nil
-	file_proto_menu_menu_proto_depIdxs = nil
+	File_menu_menu_proto = out.File
+	file_menu_menu_proto_goTypes = nil
+	file_menu_menu_proto_depIdxs = nil
 }

@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.6.0
 // - protoc             (unknown)
-// source: proto/menu/menu.proto
+// source: menu/menu.proto
 
 package menu
 
@@ -117,5 +117,5 @@ var MenuService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "proto/menu/menu.proto",
+	Metadata: "menu/menu.proto",
 }

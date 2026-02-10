@@ -2,11 +2,12 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: proto/brew/brew.proto
+// source: brew/brew.proto
 
 package brew
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -63,11 +64,11 @@ func (x DrinkStatus) String() string {
 }
 
 func (DrinkStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_proto_brew_brew_proto_enumTypes[0].Descriptor()
+	return file_brew_brew_proto_enumTypes[0].Descriptor()
 }
 
 func (DrinkStatus) Type() protoreflect.EnumType {
-	return &file_proto_brew_brew_proto_enumTypes[0]
+	return &file_brew_brew_proto_enumTypes[0]
 }
 
 func (x DrinkStatus) Number() protoreflect.EnumNumber {
@@ -76,7 +77,7 @@ func (x DrinkStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use DrinkStatus.Descriptor instead.
 func (DrinkStatus) EnumDescriptor() ([]byte, []int) {
-	return file_proto_brew_brew_proto_rawDescGZIP(), []int{0}
+	return file_brew_brew_proto_rawDescGZIP(), []int{0}
 }
 
 type OrderRequest struct {
@@ -88,7 +89,7 @@ type OrderRequest struct {
 
 func (x *OrderRequest) Reset() {
 	*x = OrderRequest{}
-	mi := &file_proto_brew_brew_proto_msgTypes[0]
+	mi := &file_brew_brew_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -100,7 +101,7 @@ func (x *OrderRequest) String() string {
 func (*OrderRequest) ProtoMessage() {}
 
 func (x *OrderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_brew_brew_proto_msgTypes[0]
+	mi := &file_brew_brew_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -113,7 +114,7 @@ func (x *OrderRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OrderRequest.ProtoReflect.Descriptor instead.
 func (*OrderRequest) Descriptor() ([]byte, []int) {
-	return file_proto_brew_brew_proto_rawDescGZIP(), []int{0}
+	return file_brew_brew_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *OrderRequest) GetMenuItemName() string {
@@ -132,7 +133,7 @@ type OrderResponse struct {
 
 func (x *OrderResponse) Reset() {
 	*x = OrderResponse{}
-	mi := &file_proto_brew_brew_proto_msgTypes[1]
+	mi := &file_brew_brew_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -144,7 +145,7 @@ func (x *OrderResponse) String() string {
 func (*OrderResponse) ProtoMessage() {}
 
 func (x *OrderResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_brew_brew_proto_msgTypes[1]
+	mi := &file_brew_brew_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -157,7 +158,7 @@ func (x *OrderResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OrderResponse.ProtoReflect.Descriptor instead.
 func (*OrderResponse) Descriptor() ([]byte, []int) {
-	return file_proto_brew_brew_proto_rawDescGZIP(), []int{1}
+	return file_brew_brew_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *OrderResponse) GetOrderId() string {
@@ -175,7 +176,7 @@ type ListOrdersRequest struct {
 
 func (x *ListOrdersRequest) Reset() {
 	*x = ListOrdersRequest{}
-	mi := &file_proto_brew_brew_proto_msgTypes[2]
+	mi := &file_brew_brew_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -187,7 +188,7 @@ func (x *ListOrdersRequest) String() string {
 func (*ListOrdersRequest) ProtoMessage() {}
 
 func (x *ListOrdersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_brew_brew_proto_msgTypes[2]
+	mi := &file_brew_brew_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -200,7 +201,7 @@ func (x *ListOrdersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListOrdersRequest.ProtoReflect.Descriptor instead.
 func (*ListOrdersRequest) Descriptor() ([]byte, []int) {
-	return file_proto_brew_brew_proto_rawDescGZIP(), []int{2}
+	return file_brew_brew_proto_rawDescGZIP(), []int{2}
 }
 
 type Order struct {
@@ -214,7 +215,7 @@ type Order struct {
 
 func (x *Order) Reset() {
 	*x = Order{}
-	mi := &file_proto_brew_brew_proto_msgTypes[3]
+	mi := &file_brew_brew_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -226,7 +227,7 @@ func (x *Order) String() string {
 func (*Order) ProtoMessage() {}
 
 func (x *Order) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_brew_brew_proto_msgTypes[3]
+	mi := &file_brew_brew_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -239,7 +240,7 @@ func (x *Order) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Order.ProtoReflect.Descriptor instead.
 func (*Order) Descriptor() ([]byte, []int) {
-	return file_proto_brew_brew_proto_rawDescGZIP(), []int{3}
+	return file_brew_brew_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *Order) GetOrderId() string {
@@ -272,7 +273,7 @@ type ListOrdersResponse struct {
 
 func (x *ListOrdersResponse) Reset() {
 	*x = ListOrdersResponse{}
-	mi := &file_proto_brew_brew_proto_msgTypes[4]
+	mi := &file_brew_brew_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -284,7 +285,7 @@ func (x *ListOrdersResponse) String() string {
 func (*ListOrdersResponse) ProtoMessage() {}
 
 func (x *ListOrdersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_brew_brew_proto_msgTypes[4]
+	mi := &file_brew_brew_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -297,7 +298,7 @@ func (x *ListOrdersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListOrdersResponse.ProtoReflect.Descriptor instead.
 func (*ListOrdersResponse) Descriptor() ([]byte, []int) {
-	return file_proto_brew_brew_proto_rawDescGZIP(), []int{4}
+	return file_brew_brew_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ListOrdersResponse) GetOrders() []*Order {
@@ -307,13 +308,13 @@ func (x *ListOrdersResponse) GetOrders() []*Order {
 	return nil
 }
 
-var File_proto_brew_brew_proto protoreflect.FileDescriptor
+var File_brew_brew_proto protoreflect.FileDescriptor
 
-const file_proto_brew_brew_proto_rawDesc = "" +
+const file_brew_brew_proto_rawDesc = "" +
 	"\n" +
-	"\x15proto/brew/brew.proto\x12\x04brew\"4\n" +
-	"\fOrderRequest\x12$\n" +
-	"\x0emenu_item_name\x18\x01 \x01(\tR\fmenuItemName\"*\n" +
+	"\x0fbrew/brew.proto\x12\x04brew\x1a\x1bbuf/validate/validate.proto\"=\n" +
+	"\fOrderRequest\x12-\n" +
+	"\x0emenu_item_name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\fmenuItemName\"*\n" +
 	"\rOrderResponse\x12\x19\n" +
 	"\border_id\x18\x01 \x01(\tR\aorderId\"\x13\n" +
 	"\x11ListOrdersRequest\"`\n" +
@@ -335,24 +336,24 @@ const file_proto_brew_brew_proto_rawDesc = "" +
 	"\n" +
 	"OrderDrink\x12\x12.brew.OrderRequest\x1a\x13.brew.OrderResponse\x12?\n" +
 	"\n" +
-	"ListOrders\x12\x17.brew.ListOrdersRequest\x1a\x18.brew.ListOrdersResponseBl\n" +
-	"\bcom.brewB\tBrewProtoP\x01Z%github.com/jany/coffee/gen/proto/brew\xa2\x02\x03BXX\xaa\x02\x04Brew\xca\x02\x04Brew\xe2\x02\x10Brew\\GPBMetadata\xea\x02\x04Brewb\x06proto3"
+	"ListOrders\x12\x17.brew.ListOrdersRequest\x1a\x18.brew.ListOrdersResponseBo\n" +
+	"\bcom.brewB\tBrewProtoP\x01Z(github.com/jany/my-coffee/gen/proto/brew\xa2\x02\x03BXX\xaa\x02\x04Brew\xca\x02\x04Brew\xe2\x02\x10Brew\\GPBMetadata\xea\x02\x04Brewb\x06proto3"
 
 var (
-	file_proto_brew_brew_proto_rawDescOnce sync.Once
-	file_proto_brew_brew_proto_rawDescData []byte
+	file_brew_brew_proto_rawDescOnce sync.Once
+	file_brew_brew_proto_rawDescData []byte
 )
 
-func file_proto_brew_brew_proto_rawDescGZIP() []byte {
-	file_proto_brew_brew_proto_rawDescOnce.Do(func() {
-		file_proto_brew_brew_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_proto_brew_brew_proto_rawDesc), len(file_proto_brew_brew_proto_rawDesc)))
+func file_brew_brew_proto_rawDescGZIP() []byte {
+	file_brew_brew_proto_rawDescOnce.Do(func() {
+		file_brew_brew_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_brew_brew_proto_rawDesc), len(file_brew_brew_proto_rawDesc)))
 	})
-	return file_proto_brew_brew_proto_rawDescData
+	return file_brew_brew_proto_rawDescData
 }
 
-var file_proto_brew_brew_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_proto_brew_brew_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
-var file_proto_brew_brew_proto_goTypes = []any{
+var file_brew_brew_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_brew_brew_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_brew_brew_proto_goTypes = []any{
 	(DrinkStatus)(0),           // 0: brew.DrinkStatus
 	(*OrderRequest)(nil),       // 1: brew.OrderRequest
 	(*OrderResponse)(nil),      // 2: brew.OrderResponse
@@ -360,7 +361,7 @@ var file_proto_brew_brew_proto_goTypes = []any{
 	(*Order)(nil),              // 4: brew.Order
 	(*ListOrdersResponse)(nil), // 5: brew.ListOrdersResponse
 }
-var file_proto_brew_brew_proto_depIdxs = []int32{
+var file_brew_brew_proto_depIdxs = []int32{
 	4, // 0: brew.ListOrdersResponse.orders:type_name -> brew.Order
 	1, // 1: brew.BrewService.OrderDrink:input_type -> brew.OrderRequest
 	3, // 2: brew.BrewService.ListOrders:input_type -> brew.ListOrdersRequest
@@ -373,27 +374,27 @@ var file_proto_brew_brew_proto_depIdxs = []int32{
 	0, // [0:1] is the sub-list for field type_name
 }
 
-func init() { file_proto_brew_brew_proto_init() }
-func file_proto_brew_brew_proto_init() {
-	if File_proto_brew_brew_proto != nil {
+func init() { file_brew_brew_proto_init() }
+func file_brew_brew_proto_init() {
+	if File_brew_brew_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_brew_brew_proto_rawDesc), len(file_proto_brew_brew_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_brew_brew_proto_rawDesc), len(file_brew_brew_proto_rawDesc)),
 			NumEnums:      1,
 			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_proto_brew_brew_proto_goTypes,
-		DependencyIndexes: file_proto_brew_brew_proto_depIdxs,
-		EnumInfos:         file_proto_brew_brew_proto_enumTypes,
-		MessageInfos:      file_proto_brew_brew_proto_msgTypes,
+		GoTypes:           file_brew_brew_proto_goTypes,
+		DependencyIndexes: file_brew_brew_proto_depIdxs,
+		EnumInfos:         file_brew_brew_proto_enumTypes,
+		MessageInfos:      file_brew_brew_proto_msgTypes,
 	}.Build()
-	File_proto_brew_brew_proto = out.File
-	file_proto_brew_brew_proto_goTypes = nil
-	file_proto_brew_brew_proto_depIdxs = nil
+	File_brew_brew_proto = out.File
+	file_brew_brew_proto_goTypes = nil
+	file_brew_brew_proto_depIdxs = nil
 }

@@ -3,16 +3,19 @@ managed:
   enabled: true
   override:
     - file_option: go_package_prefix
-      value: github.com/jany/coffee/gen
+      value: github.com/jany/my-coffee/gen/proto
+  disable:
+    - file_option: go_package
+      module: buf.build/bufbuild/protovalidate
 plugins:
   - local: protoc-gen-go
-    out: gen
+    out: gen/proto
     opt: paths=source_relative
   - local: protoc-gen-go-grpc
-    out: gen
+    out: gen/proto
     opt: paths=source_relative
   - local: protoc-gen-connect-go
-    out: gen
+    out: gen/proto
     opt: paths=source_relative
 inputs:
   - directory: proto

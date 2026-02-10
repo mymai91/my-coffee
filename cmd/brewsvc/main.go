@@ -5,6 +5,8 @@ import (
 	"net"
 	"os"
 
+	"buf.build/go/protovalidate"
+	protovalidate_middleware "github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/protovalidate"
 	"github.com/jany/my-coffee/config"
 	brewpb "github.com/jany/my-coffee/gen/proto/brew"
 	"github.com/jany/my-coffee/internal/brews"
@@ -27,7 +29,14 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	grpcServer := grpc.NewServer()
+	validator, err := protovalidate.New()
+	if err != nil {
+		log.Fatalf("failed to create validator: %v", err)
+	}
+
+	grpcServer := grpc.NewServer(
+		grpc.UnaryInterceptor(protovalidate_middleware.UnaryServerInterceptor(validator)),
+	)
 	brewpb.RegisterBrewServiceServer(grpcServer, brews.New(db))
 
 	// Only enable reflection in development

@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.6.0
 // - protoc             (unknown)
-// source: proto/brew/brew.proto
+// source: brew/brew.proto
 
 package brew
 
@@ -155,5 +155,5 @@ var BrewService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "proto/brew/brew.proto",
+	Metadata: "brew/brew.proto",
 }
