@@ -1,15 +1,18 @@
-version: v1
+version: v2
 managed:
   enabled: true
-  go_package_prefix:
-    default: github.com/jany/coffee/gen
+  override:
+    - file_option: go_package_prefix
+      value: github.com/jany/coffee/gen
 plugins:
-  - name: go
+  - local: protoc-gen-go
     out: gen
     opt: paths=source_relative
-  - name: go-grpc
+  - local: protoc-gen-go-grpc
     out: gen
     opt: paths=source_relative
-  - name: connect-go
+  - local: protoc-gen-connect-go
     out: gen
     opt: paths=source_relative
+inputs:
+  - directory: proto
