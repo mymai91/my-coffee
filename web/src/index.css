@@ -1,0 +1,36 @@
+:root {
+  --brown-900: #3e2723;
+  --brown-800: #4e342e;
+  --brown-700: #5d4037;
+  --brown-600: #6d4c41;
+  --brown-500: #795548;
+  --brown-200: #bcaaa4;
+  --brown-100: #d7ccc8;
+  --brown-50: #efebe9;
+  --cream: #fdf6ec;
+  --accent: #ff8f00;
+  --accent-hover: #ff6f00;
+  --green: #43a047;
+  --red: #e53935;
+
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+  color: var(--brown-900);
+  background-color: var(--cream);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
