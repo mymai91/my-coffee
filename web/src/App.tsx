@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Menu from "./components/Menu";
 import Orders from "./components/Orders";
 import OrderForm from "./components/OrderForm";
@@ -8,13 +8,6 @@ type Tab = "menu" | "orders" | "order";
 
 function App() {
   const [tab, setTab] = useState<Tab>("menu");
-  const ordersKey = useRef(0);
-
-  const handleOrderCreated = () => {
-    // Bump key so Orders re-mounts and refetches
-    ordersKey.current += 1;
-    setTab("orders");
-  };
 
   return (
     <div className="app">
@@ -46,8 +39,10 @@ function App() {
 
       <main className="content">
         {tab === "menu" && <Menu />}
-        {tab === "orders" && <Orders key={ordersKey.current} />}
-        {tab === "order" && <OrderForm onOrderCreated={handleOrderCreated} />}
+        {tab === "orders" && <Orders />}
+        {tab === "order" && (
+          <OrderForm onOrderCreated={() => setTab("orders")} />
+        )}
       </main>
     </div>
   );

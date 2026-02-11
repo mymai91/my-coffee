@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-import { fetchOrders } from "../api";
-import type { Order } from "../api";
+import { useOrders } from "../hooks";
 
 const STATUS_EMOJI: Record<string, string> = {
   QUEUED: "🕐",
@@ -11,31 +9,17 @@ const STATUS_EMOJI: Record<string, string> = {
 };
 
 export default function Orders() {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const { data: orders = [], isLoading, error, refetch, isFetching } = useOrders();
 
-  const load = () => {
-    setLoading(true);
-    fetchOrders()
-      .then(setOrders)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  };
-
-  useEffect(() => {
-    load();
-  }, []);
-
-  if (loading) return <div className="loading">Loading orders…</div>;
-  if (error) return <div className="error">⚠️ {error}</div>;
+  if (isLoading) return <div className="loading">Loading orders…</div>;
+  if (error) return <div className="error">⚠️ {error.message}</div>;
 
   return (
     <div className="card">
       <div className="card-header">
         <h2>📦 Orders</h2>
-        <button className="btn btn-small" onClick={load}>
-          🔄 Refresh
+        <button className="btn btn-small" onClick={() => refetch()} disabled={isFetching}>
+          {isFetching ? "⏳ Loading…" : "🔄 Refresh"}
         </button>
       </div>
       {orders.length === 0 ? (

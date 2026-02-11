@@ -1,21 +1,10 @@
-import { useEffect, useState } from "react";
-import { fetchMenu } from "../api";
-import type { MenuItem } from "../api";
+import { useMenu } from "../hooks";
 
 export default function Menu() {
-  const [items, setItems] = useState<MenuItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const { data: items = [], isLoading, error } = useMenu();
 
-  useEffect(() => {
-    fetchMenu()
-      .then(setItems)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, []);
-
-  if (loading) return <div className="loading">Loading menu…</div>;
-  if (error) return <div className="error">⚠️ {error}</div>;
+  if (isLoading) return <div className="loading">Loading menu…</div>;
+  if (error) return <div className="error">⚠️ {error.message}</div>;
 
   return (
     <div className="card">

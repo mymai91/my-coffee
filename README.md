@@ -143,3 +143,35 @@ Architecture Overview
 
 ```
 
+
+## Frontend Vite & React Query
+
+
+main.tsx
+
+App.tsx
+
+Menu.tsx
+
+Orders.tsx
+
+OrderForm.tsx
+
+What React Query gives you now
+
+| Before (manual)                        | After (React Query)                                        |
+|----------------------------------------|------------------------------------------------------------|
+| `useState` + `useEffect` + `setLoading` | `useQuery` returns `{ data, isLoading, error }` automatically |
+| `ordersKey` ref hack to force refetch   | `invalidateQueries` on mutation success — the right way   |
+| Manual refresh button re-runs full fetch | `refetch()` from the query + shows `isFetching` spinner  |
+| No background updates                   | Orders auto-refetch every 10s so you see status changes live |
+| No window focus refetch                 | Refetches on tab focus — switch back and see latest orders |
+| Menu fetched every mount                | Menu cached for 5 min (`staleTime`) — instant on tab switch |
+
+
+### File structure
+
+* hooks.ts — useMenu, useOrders, useCreateOrder — all query logic in one place
+* api.ts — unchanged, pure fetch functions (clean separation)
+* main.tsx — QueryClientProvider wraps the app
+* Components are now much simpler — no manual loading/error state management

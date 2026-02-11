@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createOrder } from "../api";
+import { useCreateOrder } from "../hooks";
 
 interface Props {
   onOrderCreated: () => void;
@@ -7,31 +7,18 @@ interface Props {
 
 export default function OrderForm({ onOrderCreated }: Props) {
   const [name, setName] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
-  const [isError, setIsError] = useState(false);
+  const mutation = useCreateOrder();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return;
 
-    setLoading(true);
-    setMessage("");
-    setIsError(false);
-
-    try {
-      const res = await createOrder(name.trim());
-      setMessage(`✅ Order placed! ID: ${res.orderId}`);
-      setName("");
-      onOrderCreated();
-    } catch (err: unknown) {
-      setIsError(true);
-      setMessage(
-        `❌ ${err instanceof Error ? err.message : "Failed to place order"}`
-      );
-    } finally {
-      setLoading(false);
-    }
+    mutation.mutate(name.trim(), {
+      onSuccess: () => {
+        setName("");
+        onOrderCreated();
+      },
+    });
   };
 
   return (
@@ -43,15 +30,24 @@ export default function OrderForm({ onOrderCreated }: Props) {
           placeholder="Enter drink name (e.g. Latte)"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          disabled={loading}
+          disabled={mutation.isPending}
           className="input"
         />
-        <button type="submit" disabled={loading || !name.trim()} className="btn">
-          {loading ? "Ordering…" : "Order ☕"}
+        <button
+          type="submit"
+          disabled={mutation.isPending || !name.trim()}
+          className="btn"
+        >
+          {mutation.isPending ? "Ordering…" : "Order ☕"}
         </button>
       </form>
-      {message && (
-        <p className={`message ${isError ? "error" : "success"}`}>{message}</p>
+      {mutation.isSuccess && (
+        <p className="message success">
+          ✅ Order placed! ID: {mutation.data.orderId}
+        </p>
+      )}
+      {mutation.isError && (
+        <p className="message error">❌ {mutation.error.message}</p>
       )}
     </div>
   );
