@@ -76,3 +76,70 @@ my-coffee/
 ├── gen/                   # Generated code (auto-created)
 └── scripts/               # Helper scripts
 ```
+
+### How to run
+
+1. Start the gRPC services as usual (brew on :50051, menu on :50052)
+
+```
+
+make run-menusvc
+
+make run-brewsvc
+
+```
+
+2. Start the API gateway:
+
+```
+go run ./cmd/apisvc
+```
+
+3. Start the Vite dev server:
+
+```
+cd web && npm run dev
+```
+
+4. Open http://localhost:5173 in your browser
+The Vite dev server is configured to proxy /api requests to the Go API gateway on :9000.
+
+
+### Building REST Gateway for Your Coffee Shop
+
+Architecture Overview
+
+```
+┌─────────────────────────────────────────────────┐
+│              Vite Frontend                      │
+│            (localhost:5173)                     │
+└───────────────────┬─────────────────────────────┘
+                    │
+                    │ HTTP/REST + JSON
+                    │
+┌───────────────────▼─────────────────────────────┐
+│           REST API Gateway                      │
+│            (localhost:8080)                     │
+│                                                 │
+│  Routes:                                        │
+│  GET    /api/menu          → ListMenuItems     │
+│  GET    /api/menu/:id      → GetMenuItem       │
+│  POST   /api/menu          → CreateMenuItem    │
+│  PUT    /api/menu/:id      → UpdateMenuItem    │
+│  DELETE /api/menu/:id      → DeleteMenuItem    │
+│                                                 │
+│  GET    /api/orders        → ListOrders        │
+│  POST   /api/orders        → CreateOrder       │
+└─────────────┬───────────────┬───────────────────┘
+              │               │
+              │ gRPC          │ gRPC
+              │               │
+    ┌─────────▼────────┐  ┌──▼──────────────┐
+    │   MenuService    │  │   BrewService   │
+    │  (localhost:50051)│  │ (localhost:50052)│
+    │                  │  │                 │
+    │  Internal gRPC   │  │  Internal gRPC  │
+    └──────────────────┘  └─────────────────┘
+
+```
+
