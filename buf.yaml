@@ -1,2 +1,6 @@
-version: v1
-name: github.com/jany/coffee
+version: v2
+modules:
+  - path: proto
+    name: github.com/jany/coffee
+deps:
+  - buf.build/bufbuild/protovalidate

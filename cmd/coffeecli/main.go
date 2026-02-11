@@ -156,12 +156,6 @@ func createOrder(client brewpb.BrewServiceClient) {
 	input, _ := reader.ReadString('\n')
 	input = strings.TrimSpace(input)
 
-	// Validate empty input
-	// if input == "" {
-	// 	fmt.Println("Error: Menu Item Name cannot be empty")
-	// 	return
-	// }
-
 	resp, err := client.OrderDrink(ctx, &brewpb.OrderRequest{MenuItemName: input})
 
 	if err != nil {
