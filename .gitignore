@@ -1,0 +1,51 @@
+# Documentation (local only)
+GO_LEARNING_GUIDE.md
+ARCHITECTURE.md
+QUICK_REFERENCE.md
+
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+coffeecli
+brewsvc
+menusvc
+apisvc
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool
+*.out
+
+# Dependency directories
+vendor/
+
+# Go workspace file
+go.work
+
+# Environment variables
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node modules (for web/)
+node_modules/
+web/node_modules/
+web/dist/
+
+# Database
+*.db
+*.sqlite

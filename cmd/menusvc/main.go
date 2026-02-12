@@ -1,35 +1,47 @@
 package main
 
 import (
-	"fmt"
-	"net"
-	"os"
+	"log"
+	"net/http"
 
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/reflection"
-
-	menupb "github.com/jany/my-coffee/gen/proto/menu"
+	"github.com/jany/my-coffee/gen/proto/menu/menuconnect"
 	"github.com/jany/my-coffee/internal/menus"
 )
 
+// cors middleware to allow requests from the Vite dev server
+func cors(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Connect-Protocol-Version")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	})
+}
+
 func main() {
-	listener, err := net.Listen("tcp", ":50052")
-	if err != nil {
-		fmt.Printf("Failed to listen on Port 50052: %v\n", err)
-		return
+	mux := http.NewServeMux()
+	path, handler := menuconnect.NewMenuServiceHandler(menus.New())
+	mux.Handle(path, handler)
+
+	// Use h2c so we can serve HTTP/2 without TLS (needed for gRPC compatibility)
+	p := new(http.Protocols)
+	p.SetHTTP1(true)
+	p.SetUnencryptedHTTP2(true)
+
+	server := http.Server{
+		Addr:      ":50052",
+		Handler:   cors(mux),
+		Protocols: p,
 	}
 
-	server := grpc.NewServer()
-	menuService := menus.New()
-	menupb.RegisterMenuServiceServer(server, menuService)
-
-	// Only enable reflection in development
-    if os.Getenv("ENV") != "production" {
-      reflection.Register(server)
-    }
-
-	fmt.Println("Menu Service is running on port 50052...")
-	if err := server.Serve(listener); err != nil {
-		fmt.Printf("Failed to serve gRPC server: %v\n", err)
+	log.Println("MenuService (Connect RPC) running on :50052")
+	if err := server.ListenAndServe(); err != nil {
+		log.Fatalf("failed to serve: %v", err)
 	}
 }

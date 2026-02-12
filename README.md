@@ -1,6 +1,8 @@
 # My Coffee Shop ☕
 
-A Go microservices project for learning gRPC.
+A production-ready Go microservices project demonstrating gRPC, Connect RPC, GORM, and modern API patterns.
+
+> 📚 **New to this project?** Check out the comprehensive [Go Learning Guide](./GO_LEARNING_GUIDE.md) with flow diagrams, architecture explanations, and interview prep!
 
 ## Architecture
 
@@ -104,8 +106,65 @@ cd web && npm run dev
 4. Open http://localhost:5173 in your browser
 The Vite dev server is configured to proxy /api requests to the Go API gateway on :9000.
 
+### Create REST with Connectrpc
 
-### Building REST Gateway for Your Coffee Shop
+Key details
+apisvc is untouched — its gRPC clients still work because Connect RPC servers with h2c support the gRPC protocol natively
+Validation — uses connectrpc.com/validate interceptor instead of the gRPC middleware
+Protocol support — all three protocols (Connect, gRPC, gRPC-Web) are supported out of the box
+
+
+#### 1️⃣ REST vs gRPC + Connect RPC
+
+| Point                | REST               | gRPC (Connect RPC)          |
+| -------------------- | ------------------ | --------------------------- |
+| Protocol             | HTTP/1.1           | HTTP/2                      |
+| Data format          | JSON               | Protobuf                    |
+| Typing               | Weakly typed       | Strongly typed              |
+| Frontend browser     | Easy               | Need gRPC-Web / Connect RPC |
+| Streaming            | No                 | Yes (bi-directional)        |
+| Performance          | Slower             | Faster, more efficient      |
+| Generate client code | Depends on library | Auto from .proto            |
+
+#### 2️⃣ Connect RPC
+
+* Connect RPC is a Go library built on gRPC.
+
+* When you write a .proto file once, Connect RPC can automatically generate:
+
+    - gRPC server & client → for backend-to-backend communication.
+
+    - REST endpoints → for frontend to call using JSON.
+
+* This means the frontend does not need to know gRPC. It can just use REST JSON.
+
+* Backend services still talk to each other with gRPC, so internal performance is fast.
+
+### Backend — Added CORS to both services:
+
+main.go — CORS middleware with Connect-Protocol-Version header
+main.go — Same CORS middleware
+
+Frontend — Connect RPC via plain fetch():
+
+api.ts — Calls Connect RPC endpoints directly:
+fetchMenu() → POST /menu.MenuService/GetMenu
+fetchOrders() → POST /brew.BrewService/ListOrders
+createOrder() → POST /brew.BrewService/OrderDrink
+getOrder() → POST /brew.BrewService/GetOrder
+updateOrderStatus() → POST /brew.BrewService/UpdateOrderStatus
+deleteOrder() → POST /brew.BrewService/DeleteOrder
+
+vite.config.ts — Removed proxy (no longer needed)
+
+How to run now (only 2 backend services!)
+
+```
+make run-brewsvc     # Terminal 1 - port 50051
+make run-menusvc     # Terminal 2 - port 50052
+cd web && npm run dev # Terminal 3 - port 5173
+```
+### (old version) Building REST Gateway for Your Coffee Shop
 
 Architecture Overview
 

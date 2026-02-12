@@ -1,3 +1,35 @@
+## Flow
+
+
+All API calls in the frontend are going through React Query. Here's the full picture:
+
+### Layer 1: api.ts — Pure fetch functions (6 total)
+
+| Function                | Connect RPC Endpoint               | Used in Hook?               |
+|-------------------------|----------------------------------|----------------------------|
+| fetchMenu()             | menu.MenuService/GetMenu          | ✅ useMenu                 |
+| fetchOrders()           | brew.BrewService/ListOrders       | ✅ useOrders               |
+| createOrder()           | brew.BrewService/OrderDrink       | ✅ useCreateOrder          |
+| getOrder()              | brew.BrewService/GetOrder         | ✅ useOrder                |
+| updateOrderStatus()     | brew.BrewService/UpdateOrderStatus | ✅ useUpdateOrderStatus    |
+| deleteOrder()           | brew.BrewService/DeleteOrder      | ✅ useDeleteOrder          |
+
+### Layer 2: hooks.ts — React Query hooks (6 total)
+
+| Hook                        | Type         | Used in Component?              |
+|-----------------------------|-------------|--------------------------------|
+| useMenu()                   | useQuery    | ✅ Menu.tsx                    |
+| useOrders()                 | useQuery    | ✅ Orders.tsx                  |
+| useCreateOrder()            | useMutation | ✅ OrderForm.tsx               |
+| useOrder()                  | useQuery    | Available (not used yet)       |
+| useUpdateOrderStatus()      | useMutation | Available (not used yet)       |
+| useDeleteOrder()            | useMutation | Available (not used yet)       |
+
+Layer 3: Components — Only import from hooks, never from api.ts directly
+✅ No component imports from api.ts directly — all go through React Query hooks. Clean separation.
+
+The three new hooks (useOrder, useUpdateOrderStatus, useDeleteOrder) are ready to use whenever you add UI for those features (e.g., a status dropdown or delete button on each order row).
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
