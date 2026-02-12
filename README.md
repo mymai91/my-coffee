@@ -140,6 +140,30 @@ Protocol support — all three protocols (Connect, gRPC, gRPC-Web) are supported
 
 * Backend services still talk to each other with gRPC, so internal performance is fast.
 
+### Backend — Added CORS to both services:
+
+main.go — CORS middleware with Connect-Protocol-Version header
+main.go — Same CORS middleware
+
+Frontend — Connect RPC via plain fetch():
+
+api.ts — Calls Connect RPC endpoints directly:
+fetchMenu() → POST /menu.MenuService/GetMenu
+fetchOrders() → POST /brew.BrewService/ListOrders
+createOrder() → POST /brew.BrewService/OrderDrink
+getOrder() → POST /brew.BrewService/GetOrder
+updateOrderStatus() → POST /brew.BrewService/UpdateOrderStatus
+deleteOrder() → POST /brew.BrewService/DeleteOrder
+
+vite.config.ts — Removed proxy (no longer needed)
+
+How to run now (only 2 backend services!)
+
+```
+make run-brewsvc     # Terminal 1 - port 50051
+make run-menusvc     # Terminal 2 - port 50052
+cd web && npm run dev # Terminal 3 - port 5173
+```
 ### (old version) Building REST Gateway for Your Coffee Shop
 
 Architecture Overview
