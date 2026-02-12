@@ -2,17 +2,14 @@ package main
 
 import (
 	"log"
-	"net"
-	"os"
+	"net/http"
 
-	"buf.build/go/protovalidate"
-	protovalidate_middleware "github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/protovalidate"
+	"connectrpc.com/connect"
+	"connectrpc.com/validate"
 	"github.com/jany/my-coffee/config"
-	brewpb "github.com/jany/my-coffee/gen/proto/brew"
+	"github.com/jany/my-coffee/gen/proto/brew/brewconnect"
 	"github.com/jany/my-coffee/internal/brews"
 	database "github.com/jany/my-coffee/internal/datbase"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/reflection"
 )
 
 func main() {
@@ -23,29 +20,27 @@ func main() {
 	db := database.Connect()
 	defer database.Close()
 
-	// Create gRPC server
-	lis, err := net.Listen("tcp", ":50051")
-	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
-	}
-
-	validator, err := protovalidate.New()
-	if err != nil {
-		log.Fatalf("failed to create validator: %v", err)
-	}
-
-	grpcServer := grpc.NewServer(
-		grpc.UnaryInterceptor(protovalidate_middleware.UnaryServerInterceptor(validator)),
+	// Create Connect RPC server with protovalidate interceptor
+	mux := http.NewServeMux()
+	path, handler := brewconnect.NewBrewServiceHandler(
+		brews.New(db),
+		connect.WithInterceptors(validate.NewInterceptor()),
 	)
-	brewpb.RegisterBrewServiceServer(grpcServer, brews.New(db))
+	mux.Handle(path, handler)
 
-	// Only enable reflection in development
-    if os.Getenv("ENV") != "production" {
-      reflection.Register(grpcServer)
-    }
+	// Use h2c so we can serve HTTP/2 without TLS (needed for gRPC compatibility)
+	p := new(http.Protocols)
+	p.SetHTTP1(true)
+	p.SetUnencryptedHTTP2(true)
 
-	log.Println("BrewService running on :50051")
-	if err := grpcServer.Serve(lis); err != nil {
+	server := http.Server{
+		Addr:      ":50051",
+		Handler:   mux,
+		Protocols: p,
+	}
+
+	log.Println("BrewService (Connect RPC) running on :50051")
+	if err := server.ListenAndServe(); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
 }

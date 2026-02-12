@@ -104,8 +104,41 @@ cd web && npm run dev
 4. Open http://localhost:5173 in your browser
 The Vite dev server is configured to proxy /api requests to the Go API gateway on :9000.
 
+### Create REST with Connectrpc
 
-### Building REST Gateway for Your Coffee Shop
+Key details
+apisvc is untouched — its gRPC clients still work because Connect RPC servers with h2c support the gRPC protocol natively
+Validation — uses connectrpc.com/validate interceptor instead of the gRPC middleware
+Protocol support — all three protocols (Connect, gRPC, gRPC-Web) are supported out of the box
+
+
+#### 1️⃣ REST vs gRPC + Connect RPC
+
+| Point                | REST               | gRPC (Connect RPC)          |
+| -------------------- | ------------------ | --------------------------- |
+| Protocol             | HTTP/1.1           | HTTP/2                      |
+| Data format          | JSON               | Protobuf                    |
+| Typing               | Weakly typed       | Strongly typed              |
+| Frontend browser     | Easy               | Need gRPC-Web / Connect RPC |
+| Streaming            | No                 | Yes (bi-directional)        |
+| Performance          | Slower             | Faster, more efficient      |
+| Generate client code | Depends on library | Auto from .proto            |
+
+#### 2️⃣ Connect RPC
+
+* Connect RPC is a Go library built on gRPC.
+
+* When you write a .proto file once, Connect RPC can automatically generate:
+
+    - gRPC server & client → for backend-to-backend communication.
+
+    - REST endpoints → for frontend to call using JSON.
+
+* This means the frontend does not need to know gRPC. It can just use REST JSON.
+
+* Backend services still talk to each other with gRPC, so internal performance is fast.
+
+### (old version) Building REST Gateway for Your Coffee Shop
 
 Architecture Overview
 
