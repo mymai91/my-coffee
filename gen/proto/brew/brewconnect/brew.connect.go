@@ -37,12 +37,22 @@ const (
 	BrewServiceOrderDrinkProcedure = "/brew.BrewService/OrderDrink"
 	// BrewServiceListOrdersProcedure is the fully-qualified name of the BrewService's ListOrders RPC.
 	BrewServiceListOrdersProcedure = "/brew.BrewService/ListOrders"
+	// BrewServiceGetOrderProcedure is the fully-qualified name of the BrewService's GetOrder RPC.
+	BrewServiceGetOrderProcedure = "/brew.BrewService/GetOrder"
+	// BrewServiceUpdateOrderStatusProcedure is the fully-qualified name of the BrewService's
+	// UpdateOrderStatus RPC.
+	BrewServiceUpdateOrderStatusProcedure = "/brew.BrewService/UpdateOrderStatus"
+	// BrewServiceDeleteOrderProcedure is the fully-qualified name of the BrewService's DeleteOrder RPC.
+	BrewServiceDeleteOrderProcedure = "/brew.BrewService/DeleteOrder"
 )
 
 // BrewServiceClient is a client for the brew.BrewService service.
 type BrewServiceClient interface {
 	OrderDrink(context.Context, *connect.Request[brew.OrderRequest]) (*connect.Response[brew.OrderResponse], error)
 	ListOrders(context.Context, *connect.Request[brew.ListOrdersRequest]) (*connect.Response[brew.ListOrdersResponse], error)
+	GetOrder(context.Context, *connect.Request[brew.GetOrderRequest]) (*connect.Response[brew.GetOrderResponse], error)
+	UpdateOrderStatus(context.Context, *connect.Request[brew.UpdateOrderStatusRequest]) (*connect.Response[brew.UpdateOrderStatusResponse], error)
+	DeleteOrder(context.Context, *connect.Request[brew.DeleteOrderRequest]) (*connect.Response[brew.DeleteOrderResponse], error)
 }
 
 // NewBrewServiceClient constructs a client for the brew.BrewService service. By default, it uses
@@ -68,13 +78,34 @@ func NewBrewServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(brewServiceMethods.ByName("ListOrders")),
 			connect.WithClientOptions(opts...),
 		),
+		getOrder: connect.NewClient[brew.GetOrderRequest, brew.GetOrderResponse](
+			httpClient,
+			baseURL+BrewServiceGetOrderProcedure,
+			connect.WithSchema(brewServiceMethods.ByName("GetOrder")),
+			connect.WithClientOptions(opts...),
+		),
+		updateOrderStatus: connect.NewClient[brew.UpdateOrderStatusRequest, brew.UpdateOrderStatusResponse](
+			httpClient,
+			baseURL+BrewServiceUpdateOrderStatusProcedure,
+			connect.WithSchema(brewServiceMethods.ByName("UpdateOrderStatus")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteOrder: connect.NewClient[brew.DeleteOrderRequest, brew.DeleteOrderResponse](
+			httpClient,
+			baseURL+BrewServiceDeleteOrderProcedure,
+			connect.WithSchema(brewServiceMethods.ByName("DeleteOrder")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // brewServiceClient implements BrewServiceClient.
 type brewServiceClient struct {
-	orderDrink *connect.Client[brew.OrderRequest, brew.OrderResponse]
-	listOrders *connect.Client[brew.ListOrdersRequest, brew.ListOrdersResponse]
+	orderDrink        *connect.Client[brew.OrderRequest, brew.OrderResponse]
+	listOrders        *connect.Client[brew.ListOrdersRequest, brew.ListOrdersResponse]
+	getOrder          *connect.Client[brew.GetOrderRequest, brew.GetOrderResponse]
+	updateOrderStatus *connect.Client[brew.UpdateOrderStatusRequest, brew.UpdateOrderStatusResponse]
+	deleteOrder       *connect.Client[brew.DeleteOrderRequest, brew.DeleteOrderResponse]
 }
 
 // OrderDrink calls brew.BrewService.OrderDrink.
@@ -87,10 +118,28 @@ func (c *brewServiceClient) ListOrders(ctx context.Context, req *connect.Request
 	return c.listOrders.CallUnary(ctx, req)
 }
 
+// GetOrder calls brew.BrewService.GetOrder.
+func (c *brewServiceClient) GetOrder(ctx context.Context, req *connect.Request[brew.GetOrderRequest]) (*connect.Response[brew.GetOrderResponse], error) {
+	return c.getOrder.CallUnary(ctx, req)
+}
+
+// UpdateOrderStatus calls brew.BrewService.UpdateOrderStatus.
+func (c *brewServiceClient) UpdateOrderStatus(ctx context.Context, req *connect.Request[brew.UpdateOrderStatusRequest]) (*connect.Response[brew.UpdateOrderStatusResponse], error) {
+	return c.updateOrderStatus.CallUnary(ctx, req)
+}
+
+// DeleteOrder calls brew.BrewService.DeleteOrder.
+func (c *brewServiceClient) DeleteOrder(ctx context.Context, req *connect.Request[brew.DeleteOrderRequest]) (*connect.Response[brew.DeleteOrderResponse], error) {
+	return c.deleteOrder.CallUnary(ctx, req)
+}
+
 // BrewServiceHandler is an implementation of the brew.BrewService service.
 type BrewServiceHandler interface {
 	OrderDrink(context.Context, *connect.Request[brew.OrderRequest]) (*connect.Response[brew.OrderResponse], error)
 	ListOrders(context.Context, *connect.Request[brew.ListOrdersRequest]) (*connect.Response[brew.ListOrdersResponse], error)
+	GetOrder(context.Context, *connect.Request[brew.GetOrderRequest]) (*connect.Response[brew.GetOrderResponse], error)
+	UpdateOrderStatus(context.Context, *connect.Request[brew.UpdateOrderStatusRequest]) (*connect.Response[brew.UpdateOrderStatusResponse], error)
+	DeleteOrder(context.Context, *connect.Request[brew.DeleteOrderRequest]) (*connect.Response[brew.DeleteOrderResponse], error)
 }
 
 // NewBrewServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -112,12 +161,36 @@ func NewBrewServiceHandler(svc BrewServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(brewServiceMethods.ByName("ListOrders")),
 		connect.WithHandlerOptions(opts...),
 	)
+	brewServiceGetOrderHandler := connect.NewUnaryHandler(
+		BrewServiceGetOrderProcedure,
+		svc.GetOrder,
+		connect.WithSchema(brewServiceMethods.ByName("GetOrder")),
+		connect.WithHandlerOptions(opts...),
+	)
+	brewServiceUpdateOrderStatusHandler := connect.NewUnaryHandler(
+		BrewServiceUpdateOrderStatusProcedure,
+		svc.UpdateOrderStatus,
+		connect.WithSchema(brewServiceMethods.ByName("UpdateOrderStatus")),
+		connect.WithHandlerOptions(opts...),
+	)
+	brewServiceDeleteOrderHandler := connect.NewUnaryHandler(
+		BrewServiceDeleteOrderProcedure,
+		svc.DeleteOrder,
+		connect.WithSchema(brewServiceMethods.ByName("DeleteOrder")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/brew.BrewService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case BrewServiceOrderDrinkProcedure:
 			brewServiceOrderDrinkHandler.ServeHTTP(w, r)
 		case BrewServiceListOrdersProcedure:
 			brewServiceListOrdersHandler.ServeHTTP(w, r)
+		case BrewServiceGetOrderProcedure:
+			brewServiceGetOrderHandler.ServeHTTP(w, r)
+		case BrewServiceUpdateOrderStatusProcedure:
+			brewServiceUpdateOrderStatusHandler.ServeHTTP(w, r)
+		case BrewServiceDeleteOrderProcedure:
+			brewServiceDeleteOrderHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -133,4 +206,16 @@ func (UnimplementedBrewServiceHandler) OrderDrink(context.Context, *connect.Requ
 
 func (UnimplementedBrewServiceHandler) ListOrders(context.Context, *connect.Request[brew.ListOrdersRequest]) (*connect.Response[brew.ListOrdersResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("brew.BrewService.ListOrders is not implemented"))
+}
+
+func (UnimplementedBrewServiceHandler) GetOrder(context.Context, *connect.Request[brew.GetOrderRequest]) (*connect.Response[brew.GetOrderResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("brew.BrewService.GetOrder is not implemented"))
+}
+
+func (UnimplementedBrewServiceHandler) UpdateOrderStatus(context.Context, *connect.Request[brew.UpdateOrderStatusRequest]) (*connect.Response[brew.UpdateOrderStatusResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("brew.BrewService.UpdateOrderStatus is not implemented"))
+}
+
+func (UnimplementedBrewServiceHandler) DeleteOrder(context.Context, *connect.Request[brew.DeleteOrderRequest]) (*connect.Response[brew.DeleteOrderResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("brew.BrewService.DeleteOrder is not implemented"))
 }

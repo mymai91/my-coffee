@@ -17,7 +17,7 @@ import (
 func cors(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 		if r.Method == http.MethodOptions {
@@ -136,6 +136,122 @@ func main() {
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(map[string]string{
 			"orderId": resp.OrderId,
+		})
+	})
+
+	// GET /api/orders/{orderId} — get a single order
+	mux.HandleFunc("GET /api/orders/{orderId}", func(w http.ResponseWriter, r *http.Request) {
+		orderId := r.PathValue("orderId")
+		if orderId == "" {
+			http.Error(w, "orderId is required", http.StatusBadRequest)
+			return
+		}
+
+		resp, err := brewClient.GetOrder(context.Background(), &brewpb.GetOrderRequest{
+			OrderId: orderId,
+		})
+		if err != nil {
+			http.Error(w, fmt.Sprintf("failed to get order: %v", err), http.StatusInternalServerError)
+			return
+		}
+
+		type Order struct {
+			OrderID      string `json:"orderId"`
+			MenuItemName string `json:"menuItemName"`
+			Status       string `json:"status"`
+		}
+
+		order := Order{
+			OrderID:      resp.Order.OrderId,
+			MenuItemName: resp.Order.MenuItemName,
+			Status:       resp.Order.Status,
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(order)
+	})
+
+	// PATCH /api/orders/{orderId}/status — update order status
+	mux.HandleFunc("PATCH /api/orders/{orderId}/status", func(w http.ResponseWriter, r *http.Request) {
+		orderId := r.PathValue("orderId")
+		if orderId == "" {
+			http.Error(w, "orderId is required", http.StatusBadRequest)
+			return
+		}
+
+		var req struct {
+			Status string `json:"status"`
+		}
+
+		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+			http.Error(w, "invalid request body", http.StatusBadRequest)
+			return
+		}
+
+		if req.Status == "" {
+			http.Error(w, "status is required", http.StatusBadRequest)
+			return
+		}
+
+		// Map string status to enum
+		statusMap := map[string]brewpb.DrinkStatus{
+			"QUEUED":   brewpb.DrinkStatus_QUEUED,
+			"GRINDING": brewpb.DrinkStatus_GRINDING,
+			"BREWING":  brewpb.DrinkStatus_BREWING,
+			"FROTHING": brewpb.DrinkStatus_FROTHING,
+			"READY":    brewpb.DrinkStatus_READY,
+		}
+
+		status, ok := statusMap[req.Status]
+		if !ok {
+			http.Error(w, "invalid status value", http.StatusBadRequest)
+			return
+		}
+
+		resp, err := brewClient.UpdateOrderStatus(context.Background(), &brewpb.UpdateOrderStatusRequest{
+			OrderId: orderId,
+			Status:  status,
+		})
+		if err != nil {
+			http.Error(w, fmt.Sprintf("failed to update order status: %v", err), http.StatusInternalServerError)
+			return
+		}
+
+		type Order struct {
+			OrderID      string `json:"orderId"`
+			MenuItemName string `json:"menuItemName"`
+			Status       string `json:"status"`
+		}
+
+		order := Order{
+			OrderID:      resp.Order.OrderId,
+			MenuItemName: resp.Order.MenuItemName,
+			Status:       resp.Order.Status,
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(order)
+	})
+
+	// DELETE /api/orders/{orderId} — delete an order
+	mux.HandleFunc("DELETE /api/orders/{orderId}", func(w http.ResponseWriter, r *http.Request) {
+		orderId := r.PathValue("orderId")
+		if orderId == "" {
+			http.Error(w, "orderId is required", http.StatusBadRequest)
+			return
+		}
+
+		resp, err := brewClient.DeleteOrder(context.Background(), &brewpb.DeleteOrderRequest{
+			OrderId: orderId,
+		})
+		if err != nil {
+			http.Error(w, fmt.Sprintf("failed to delete order: %v", err), http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(map[string]bool{
+			"success": resp.Success,
 		})
 	})
 
