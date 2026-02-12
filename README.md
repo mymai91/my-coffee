@@ -1,6 +1,8 @@
 # My Coffee Shop ☕
 
-A Go microservices project for learning gRPC.
+A production-ready Go microservices project demonstrating gRPC, Connect RPC, GORM, and modern API patterns.
+
+> 📚 **New to this project?** Check out the comprehensive [Go Learning Guide](./GO_LEARNING_GUIDE.md) with flow diagrams, architecture explanations, and interview prep!
 
 ## Architecture
 
