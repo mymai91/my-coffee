@@ -8,7 +8,9 @@ import (
 	"connectrpc.com/validate"
 	"github.com/jany/my-coffee/config"
 	"github.com/jany/my-coffee/gen/proto/brew/brewconnect"
-	"github.com/jany/my-coffee/internal/brews"
+	"github.com/jany/my-coffee/internal/adapters/handler"
+	"github.com/jany/my-coffee/internal/adapters/repository"
+	"github.com/jany/my-coffee/internal/core/services"
 	database "github.com/jany/my-coffee/internal/datbase"
 )
 
@@ -36,13 +38,18 @@ func main() {
 	db := database.Connect()
 	defer database.Close()
 
+	// Wire hexagonal layers: repository (driven adapter) → service (core) → handler (driving adapter)
+	orderRepo := repository.NewGormOrderRepository(db)
+	orderSvc := services.NewOrderService(orderRepo)
+	brewHandler := handler.NewBrewHandler(orderSvc)
+
 	// Create Connect RPC server with protovalidate interceptor
 	mux := http.NewServeMux()
-	path, handler := brewconnect.NewBrewServiceHandler(
-		brews.New(db),
+	path, h := brewconnect.NewBrewServiceHandler(
+		brewHandler,
 		connect.WithInterceptors(validate.NewInterceptor()),
 	)
-	mux.Handle(path, handler)
+	mux.Handle(path, h)
 
 	// Use h2c so we can serve HTTP/2 without TLS (needed for gRPC compatibility)
 	p := new(http.Protocols)

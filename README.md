@@ -164,6 +164,58 @@ make run-brewsvc     # Terminal 1 - port 50051
 make run-menusvc     # Terminal 2 - port 50052
 cd web && npm run dev # Terminal 3 - port 5173
 ```
+
+## Hexagon architecture
+
+branch feature-9-update-with-hexagonal-architecture
+
+The migration to hexagonal architecture is complete and compiles successfully. Here's a summary of the new structure:
+
+New hexagonal layout
+
+```
+internal/
+  core/                          ← THE HEXAGON (no external dependencies)
+    domain/
+      order.go                   ← Order entity + OrderStatus (pure Go)
+      menu_item.go               ← MenuItem entity (pure Go)
+    ports/
+      repositories.go            ← OrderRepository interface (driven port)
+      services.go                ← OrderService + MenuService interfaces (driving ports)
+    services/
+      order_service.go           ← Use-case logic, depends only on ports
+      menu_service.go            ← Menu use-case logic
+  adapters/                      ← OUTSIDE THE HEXAGON
+    repository/
+      order_model.go             ← GORM model + domain ↔ model mappers
+      gorm_order_repository.go   ← Implements ports.OrderRepository with GORM
+    handler/
+      brew_handler.go            ← Implements brewconnect.BrewServiceHandler, calls ports.OrderService
+      menu_handler.go            ← Implements menuconnect.MenuServiceHandler, calls ports.MenuService
+```
+
+#### Key design decisions
+
+## Architecture Dependency Rules
+
+| Layer | Depends On | Must NOT Depend On |
+|-------|------------|-------------------|
+| **Domain** | Nothing | Any other layer |
+| **Ports (Interfaces)** | Domain | Adapters, Infrastructure |
+| **Services (Use Cases)** | Domain, Ports | Adapters, GORM, Protobuf |
+| **Handler Adapter** | Ports, Protobuf | GORM, Repository Implementation |
+| **Repository Adapter** | Ports, GORM | Handlers, Protobuf |
+
+Wiring (in cmd)
+
+Each main.go wires the layers with plain constructor injection:
+
+```
+Repository (driven adapter) → Service (core) → Handler (driving adapter)
+```
+
+The old packages under brews, menus, models, and repository are no longer imported by any cmd entrypoint and can be deleted when you're ready.
+
 ### (old version) Building REST Gateway for Your Coffee Shop
 
 Architecture Overview

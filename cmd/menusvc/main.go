@@ -5,7 +5,8 @@ import (
 	"net/http"
 
 	"github.com/jany/my-coffee/gen/proto/menu/menuconnect"
-	"github.com/jany/my-coffee/internal/menus"
+	"github.com/jany/my-coffee/internal/adapters/handler"
+	"github.com/jany/my-coffee/internal/core/services"
 )
 
 // cors middleware to allow requests from the Vite dev server
@@ -25,9 +26,13 @@ func cors(next http.Handler) http.Handler {
 }
 
 func main() {
+	// Wire hexagonal layers: service (core) → handler (driving adapter)
+	menuSvc := services.NewMenuService()
+	menuHandler := handler.NewMenuHandler(menuSvc)
+
 	mux := http.NewServeMux()
-	path, handler := menuconnect.NewMenuServiceHandler(menus.New())
-	mux.Handle(path, handler)
+	path, h := menuconnect.NewMenuServiceHandler(menuHandler)
+	mux.Handle(path, h)
 
 	// Use h2c so we can serve HTTP/2 without TLS (needed for gRPC compatibility)
 	p := new(http.Protocols)
